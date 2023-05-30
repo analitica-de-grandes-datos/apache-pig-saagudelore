@@ -19,9 +19,4 @@ split_data = FOREACH data GENERATE FLATTEN(STRSPLIT(line, '\t')) AS (letter:char
 grouped_data = GROUP split_data BY letter;
 count_data = FOREACH grouped_data GENERATE group, COUNT(split_data);
 
--- Genera una cadena de caracteres con el resultado separado por comas
--- result = FOREACH count_data GENERATE letter, count;
--- result_str = FOREACH result GENERATE CONCAT(letter, ',', (chararray)count) AS result_str;
-
--- Almacena el resultado en la carpeta de salida
 STORE count_data INTO 'output' USING PigStorage(',');
