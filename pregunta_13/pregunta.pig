@@ -32,4 +32,5 @@ data = LOAD 'data.csv' USING PigStorage(',')
 
 data = FOREACH data GENERATE col5;
 data = FILTER data BY SUBSTRING(col5,0,1) MATCHES '[b]';
+
 STORE data INTO 'output' USING PigStorage(',');
