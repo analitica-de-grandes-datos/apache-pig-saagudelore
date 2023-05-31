@@ -34,3 +34,23 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+datos = LOAD 'data.csv' USING PigStorage(',')
+        AS (col1:int,
+                col2:chararray,
+                col3:chararray,
+                col4:chararray,
+                col5:chararray,
+                col6:int); 
+
+data_filtro_1 = FOREACH datos GENERATE col4, ToDate(col4,'yyyy-MM-dd') as fecha;
+data_filtro_2 = FOREACH data_filtro_1 GENERATE col4, SUBSTRING(col4,8,10) as dia, GetDay(fecha) as dia2, LOWER(ToString(fecha,'EEEEE')) as dia3; 
+data_filtro_3 = FOREACH data_filtro_2 GENERATE col4, dia, dia2, REPLACE(dia3,'monday','lunes') as dia3;  
+data_filtro_4 = FOREACH data_filtro_3 GENERATE col4, dia, dia2, REPLACE(dia3,'tuesday','martes') as dia3;  
+data_filtro_5 = FOREACH data_filtro_4 GENERATE col4, dia, dia2, REPLACE(dia3,'wednesday','miercoles') as dia3;  
+data_filtro_6 = FOREACH data_filtro_5 GENERATE col4, dia, dia2, REPLACE(dia3,'thursday','jueves') as dia3;  
+data_filtro_7 = FOREACH data_filtro_6 GENERATE col4, dia, dia2, REPLACE(dia3,'friday','viernes') as dia3;  
+data_filtro_8 = FOREACH data_filtro_7 GENERATE col4, dia, dia2, REPLACE(dia3,'saturday','sabado') as dia3;  
+data_filtro_9 = FOREACH data_filtro_8 GENERATE col4, dia, dia2, REPLACE(dia3,'sunday','domingo') as dia3;  
+data_filtro_10 = FOREACH data_filtro_9 GENERATE col4, dia, dia2, SUBSTRING(dia3,0,3), dia3;  
+
+STORE data_filtro_10 INTO 'output/' USING PigStorage(',');
