@@ -26,5 +26,20 @@ evaluación, pig sera eejcutado ejecutado en modo local:
 
 $ pig -x local -f pregunta.pig
 
-         >>> Escriba su respuesta a partir de este punto <<<
+        >>> Escriba su respuesta a partir de este punto <<<
 */
+
+data = LOAD 'data.csv' USING PigStorage(',')
+     AS(driverId:INT,
+     truckId:INT,
+     eventTime:CHARARRAY);
+
+limited_data = LIMIT data 10;
+sorted_data = ORDER limited_data BY driverId, truckId, eventTime;
+
+-- grouped_data = GROUP split_data BY letter;
+-- count_data = FOREACH grouped_data GENERATE group, COUNT(split_data);
+
+final_data = FOREACH sorted_data GENERATE driverId, truckId, eventTime;
+
+STORE final_data INTO 'output' USING PigStorage(',');
