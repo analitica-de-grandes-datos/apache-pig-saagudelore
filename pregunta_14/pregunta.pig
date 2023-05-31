@@ -29,6 +29,6 @@ data = LOAD 'data.csv' USING PigStorage(',')
             col6:INT);
 
 data = FOREACH data GENERATE col5;
-data_filtered = FILTER data BY NOT (SUBSTRING(col5,0,1) MATCHES '[b]');
+data_filtered = FILTER data BY NOT (SUBSTRING(col5,0,1) MATCHES 'b');
 
 STORE data_filtered INTO 'output' USING PigStorage(',');
