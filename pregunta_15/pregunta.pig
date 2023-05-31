@@ -20,3 +20,15 @@ $ pig -x local -f pregunta.pig
 
 */
 
+data = LOAD 'data.csv' USING PigStorage(',')
+        AS(col1:INT,
+            col2:charArray,
+            col3:charArray,
+            col4:charArray,
+            col5:charArray,
+            col6:INT);
+
+data = FILTER data BY (col5 MATCHES 'blue') AND (SUBSTRING(col2,0,1) MATCHES '[Z]');
+data_procesed = FOREACH data GENERATE CONCAT(col2, ' ', col5);
+
+STORE data_procesed INTO 'output' USING PigStorage(',');
