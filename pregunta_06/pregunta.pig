@@ -19,7 +19,7 @@ data = LOAD 'data.tsv' AS
           col2:bag{},
           col3:map[]);
 
-data = FOREACH data GENERATE FLATTEN(col2) as letter;
+data = FOREACH data GENERATE FLATTEN(col3) as letter;
 grouped_data = GROUP data BY letter;
 final_data = FOREACH grouped_data GENERATE group, COUNT(data.letter);
 
